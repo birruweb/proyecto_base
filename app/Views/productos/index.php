@@ -1,11 +1,16 @@
 <div class="card">
     <div class="card-header d-flex align-items-center justify-content-between">
         <h2 class="h6 mb-0">Catálogo de productos</h2>
-        <?php if (puede('productos.crear')): ?>
-            <button type="button" class="btn btn-primary btn-sm text-nowrap" id="btnNuevo">
-                <i class="bi bi-plus-lg me-1"></i>Nuevo producto
-            </button>
-        <?php endif; ?>
+        <div class="d-flex gap-2">
+            <a href="<?= url('productos/exportar') ?>" class="btn btn-outline-success btn-sm text-nowrap">
+                <i class="bi bi-file-earmark-excel me-1"></i>Exportar
+            </a>
+            <?php if (puede('productos.crear')): ?>
+                <button type="button" class="btn btn-primary btn-sm text-nowrap" id="btnNuevo">
+                    <i class="bi bi-plus-lg me-1"></i>Nuevo producto
+                </button>
+            <?php endif; ?>
+        </div>
     </div>
     <div class="card-body">
         <table id="tablaProductos" class="table table-hover align-middle w-100"

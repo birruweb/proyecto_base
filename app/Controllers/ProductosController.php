@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Core\Controller;
+use App\Core\Excel;
 use App\Core\Response;
 use App\Models\Producto;
 
@@ -32,6 +33,17 @@ final class ProductosController extends Controller
     public function listar(): void
     {
         $this->json(['data' => $this->productos->todos('nombre')]);
+    }
+
+    /** Descarga el catálogo como .xlsx (productos-AAAA-MM-DD.xlsx) */
+    public function exportar(): void
+    {
+        Excel::descargar('productos', [
+            'nombre'      => 'Nombre',
+            'descripcion' => 'Descripción',
+            'precio'      => 'Precio',
+            'stock'       => 'Stock',
+        ], $this->productos->todos('nombre'), 'Productos');
     }
 
     public function crear(): void

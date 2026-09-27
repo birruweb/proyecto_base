@@ -59,6 +59,7 @@ $router->post('/modulos/eliminar',   [ModulosController::class, 'eliminar'],   '
 // ---- Productos (módulo de ejemplo: cópialo para crear los tuyos) ----
 $router->get('/productos',             [ProductosController::class, 'index'],      'productos.ver');
 $router->get('/productos/listar',      [ProductosController::class, 'listar'],     'productos.ver');
+$router->get('/productos/exportar',    [ProductosController::class, 'exportar'],   'productos.ver');
 $router->post('/productos/crear',      [ProductosController::class, 'crear'],      'productos.crear');
 $router->post('/productos/actualizar', [ProductosController::class, 'actualizar'], 'productos.editar');
 $router->post('/productos/eliminar',   [ProductosController::class, 'eliminar'],   'productos.eliminar');
