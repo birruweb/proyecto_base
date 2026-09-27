@@ -16,6 +16,29 @@ $(function () {
         hijo: { badge: '<span class="badge text-bg-light border">Submódulo</span>', ayuda: 'Enlace dentro de un grupo.' },
     };
 
+    // ---- Grupos colapsados: sus submódulos no se muestran ----
+    const colapsados = new Set();
+
+    DataTable.ext.search.push((settings, datos, indice, fila) => {
+        if (settings.nTable.id !== 'tablaModulos' || fila.padre_id === null) return true;
+        if (tabla.search() !== '') return true;   // al buscar se muestra todo
+        return !colapsados.has(Number(fila.padre_id));
+    });
+
+    /** Flecha para colapsar un grupo con submódulos; un espacio igual en las demás raíces para alinear */
+    function flecha(fila) {
+        if (fila.tipo === 'hijo') return '';
+        if (fila.tipo !== 'grupo' || Number(fila.hijos) === 0) {
+            return '<span class="d-inline-block me-1" style="width: 1rem"></span>';
+        }
+        const cerrado = colapsados.has(Number(fila.id));
+        return `<button type="button" class="btn btn-link btn-sm p-0 me-1 text-body-secondary btn-colapsar"
+                        data-id="${Number(fila.id)}" aria-expanded="${!cerrado}"
+                        title="${cerrado ? 'Mostrar submódulos' : 'Ocultar submódulos'}" style="width: 1rem">
+                    <i class="bi bi-chevron-${cerrado ? 'right' : 'down'}"></i>
+                </button>`;
+    }
+
     // ---- Listado (el servidor ya lo manda ordenado como árbol) ----
     const tabla = App.tabla('#tablaModulos', {
         ajax: App.url('modulos/listar'),
@@ -28,19 +51,39 @@ $(function () {
                     if (tipo !== 'display') return dato;
                     const rama = fila.tipo === 'hijo' ? '<span class="text-body-tertiary ms-3 me-1">└</span>' : '';
                     const peso = fila.tipo === 'grupo' ? 'fw-semibold' : '';
-                    return `${rama}<i class="bi ${App.escapar(fila.icono)} me-2"></i><span class="${peso}">${App.escapar(dato)}</span>`;
+                    return `${flecha(fila)}${rama}<i class="bi ${App.escapar(fila.icono)} me-2"></i><span class="${peso}">${App.escapar(dato)}</span>`;
                 },
             },
             { data: 'tipo', render: (dato, tipo) => (tipo === 'display' ? tipos[dato].badge : dato) },
             { data: 'clave', render: (dato, tipo) => (tipo === 'display' ? `<code>${App.escapar(dato)}</code>` : dato) },
             { data: 'ruta', render: App.render.texto },
-            { data: 'orden', className: 'text-center' },
+            {
+                data: 'orden', className: 'text-center',
+                // En negritas solo el de los grupos, para distinguir su orden del de sus submódulos
+                render: (dato, tipo, fila) => (tipo === 'display' && fila.tipo === 'grupo' ? `<strong>${Number(dato)}</strong>` : dato),
+            },
             { data: 'activo', render: App.render.estado },
             {
                 data: null, orderable: false, searchable: false, className: 'text-end text-nowrap',
                 render: (dato, tipo, fila) => App.botonesAccion(puedeEditar, puedeEliminar && !delSistema.includes(fila.clave)),
             },
         ],
+    });
+
+    // ---- Colapsar / expandir un grupo ----
+    $tabla.on('click', '.btn-colapsar', function () {
+        const id = Number($(this).data('id'));
+        if (colapsados.has(id)) {
+            colapsados.delete(id);
+        } else {
+            colapsados.add(id);
+        }
+        const cerrado = colapsados.has(id);
+
+        $(this).attr('aria-expanded', String(!cerrado))
+            .attr('title', cerrado ? 'Mostrar submódulos' : 'Ocultar submódulos')
+            .find('i').attr('class', `bi bi-chevron-${cerrado ? 'right' : 'down'}`);
+        tabla.draw(false);   // false: se queda en la misma página
     });
 
     // ---- Ayudantes del formulario ----

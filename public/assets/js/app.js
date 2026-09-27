@@ -99,6 +99,7 @@ const App = (() => {
     };
 
     function tabla(selector, opciones = {}) {
+        $(selector).addClass('table-striped');   // filas alternadas (cebra) en todas las tablas
         return new DataTable(selector, $.extend(true, {
             language: idiomaTabla,
             pageLength: 10,

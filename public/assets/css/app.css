@@ -7,6 +7,8 @@
     --sidebar-texto: #cbd5e1;
     --sidebar-activo: #0d6efd;
     --fondo-app: #f1f4f9;
+    --tabla-cebra: #f3f4f6;       /* filas alternadas de las tablas */
+    --tabla-hover: #e7eefc;       /* fila bajo el mouse */
 }
 
 body {
@@ -255,6 +257,16 @@ table.dataTable thead th {
 }
 
 /* Scroll horizontal de la tabla en pantallas chicas */
+/* Filas alternadas (cebra): reemplaza el rayado de DataTables, que es casi invisible.
+   El hover va después para que gane también sobre las filas grises. */
+table.table.dataTable.table-striped > tbody > tr:nth-of-type(2n+1) > * {
+    box-shadow: inset 0 0 0 9999px var(--tabla-cebra);
+}
+
+table.table.dataTable.table-hover > tbody > tr:hover > * {
+    box-shadow: inset 0 0 0 9999px var(--tabla-hover);
+}
+
 div.dt-container .dt-layout-table > div,
 div.dt-container .row:has(> div > table.dataTable) > div {
     overflow-x: auto;
