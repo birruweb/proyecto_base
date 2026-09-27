@@ -36,6 +36,8 @@ Base MVC en PHP puro para sistemas administrativos: login, usuarios, roles con p
 | **Administrador** | Ver, crear y editar en todos los módulos; no puede eliminar |
 | **Consulta** | Ejemplo mínimo: solo ver productos |
 
+**Eliminar es exclusivo del Superadmin:** ningún otro rol puede tener ese permiso (la matriz de *Roles y permisos* solo ofrece Ver, Crear y Editar, y el servidor lo niega aunque la BD diga otra cosa). En la matriz, el interruptor **Todos** marca ver, crear y editar de un módulo de una vez; el del encabezado de un grupo lo hace con todos sus submódulos.
+
 Crea un usuario con Administrador o Consulta para ver cómo funcionan los permisos. Cuando agregues módulos nuevos, marca sus permisos al Administrador en *Roles y permisos* (el Superadmin ya los ve).
 
 ---

@@ -139,6 +139,9 @@ final class Auth
             return true;
         }
         [$modulo, $accion] = array_pad(explode('.', $permiso, 2), 2, 'ver');
+        if ($accion === 'eliminar') {
+            return false;   // eliminar es exclusivo del Superadmin, aunque la BD diga otra cosa
+        }
         return !empty(self::permisos()[$modulo][$accion]);
     }
 }

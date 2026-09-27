@@ -1,6 +1,7 @@
 <?php
 /** Variables: $modulos */
-$acciones = ['ver' => 'Ver', 'crear' => 'Crear', 'editar' => 'Editar', 'eliminar' => 'Eliminar'];
+// "eliminar" no se ofrece: es exclusivo del Superadmin
+$acciones = ['ver' => 'Ver', 'crear' => 'Crear', 'editar' => 'Editar'];
 ?>
 <div class="card">
     <div class="card-header d-flex align-items-center justify-content-between">
@@ -63,6 +64,7 @@ $acciones = ['ver' => 'Ver', 'crear' => 'Crear', 'editar' => 'Editar', 'eliminar
                         <thead class="table-light">
                         <tr>
                             <th>Módulo</th>
+                            <th class="text-center" style="width: 90px">Todos</th>
                             <?php foreach ($acciones as $etiqueta): ?>
                                 <th class="text-center" style="width: 90px"><?= $etiqueta ?></th>
                             <?php endforeach; ?>
@@ -70,11 +72,20 @@ $acciones = ['ver' => 'Ver', 'crear' => 'Crear', 'editar' => 'Editar', 'eliminar
                         </thead>
                         <tbody>
                         <?php
-                        // Fila con checkboxes de un módulo que tiene ruta
-                        $fila = function (array $m, bool $esHijo) use ($acciones): void { ?>
+                        // Fila con checkboxes de un módulo que tiene ruta.
+                        // El interruptor "Todos" marca/desmarca sus acciones de una vez (no se envía).
+                        $fila = function (array $m, ?int $grupoId) use ($acciones): void { ?>
                             <tr>
-                                <td class="<?= $esHijo ? 'ps-4' : '' ?>">
+                                <td class="<?= $grupoId !== null ? 'ps-4' : '' ?>">
                                     <i class="bi <?= e($m['icono']) ?> me-2 text-body-secondary"></i><?= e($m['nombre']) ?>
+                                </td>
+                                <td class="text-center">
+                                    <div class="form-switch d-inline-block">
+                                        <input class="form-check-input permiso-todos" type="checkbox" role="switch"
+                                               data-modulo="<?= (int) $m['id'] ?>"
+                                               <?= $grupoId !== null ? 'data-grupo="' . $grupoId . '"' : '' ?>
+                                               aria-label="<?= e('Todos los permisos de ' . $m['nombre']) ?>">
+                                    </div>
                                 </td>
                                 <?php foreach ($acciones as $accion => $etiqueta): ?>
                                     <td class="text-center">
@@ -89,24 +100,35 @@ $acciones = ['ver' => 'Ver', 'crear' => 'Crear', 'editar' => 'Editar', 'eliminar
 
                         foreach ($modulos as $m):
                             if ($m['ruta'] !== null) {
-                                $fila($m, false);           // módulo raíz
+                                $fila($m, null);            // módulo raíz
                                 continue;
                             }
                             if ($m['hijos'] === []) {
                                 continue;                   // grupo vacío: nada que permitir
                             } ?>
                             <tr class="table-light">
-                                <td colspan="5" class="fw-semibold small text-uppercase text-body-secondary">
+                                <td class="fw-semibold small text-uppercase text-body-secondary">
                                     <i class="bi <?= e($m['icono']) ?> me-2"></i><?= e($m['nombre']) ?>
                                 </td>
+                                <td class="text-center">
+                                    <div class="form-switch d-inline-block">
+                                        <input class="form-check-input grupo-todos" type="checkbox" role="switch"
+                                               data-grupo="<?= (int) $m['id'] ?>"
+                                               aria-label="<?= e('Todos los permisos del grupo ' . $m['nombre']) ?>">
+                                    </div>
+                                </td>
+                                <td colspan="<?= count($acciones) ?>"></td>
                             </tr>
                             <?php foreach ($m['hijos'] as $hijo) {
-                                $fila($hijo, true);         // submódulos del grupo
+                                $fila($hijo, (int) $m['id']);   // submódulos del grupo
                             }
                         endforeach; ?>
                         </tbody>
                     </table>
-                    <div class="form-text">Al marcar crear, editar o eliminar se marca "ver" automáticamente.</div>
+                    <div class="form-text">
+                        "Todos" marca ver, crear y editar de una vez. Al marcar crear o editar se marca "ver" automáticamente.
+                        Eliminar es exclusivo del Superadmin.
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

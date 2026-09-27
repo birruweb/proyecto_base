@@ -107,7 +107,8 @@ final class RolesController extends Controller
 
     /**
      * Convierte los checkboxes permisos[modulo_id][accion] en filas limpias.
-     * Si puede crear, editar o eliminar, automáticamente puede ver.
+     * Si puede crear o editar, automáticamente puede ver.
+     * "eliminar" nunca se guarda: es exclusivo del Superadmin.
      * Devuelve [permisos, ids de los módulos que aparecen en la matriz].
      */
     private function permisosDelFormulario(): array
@@ -131,7 +132,8 @@ final class RolesController extends Controller
             foreach (Permiso::ACCIONES as $accion) {
                 $acciones[$accion] = isset($marcados[$accion]) ? 1 : 0;
             }
-            if ($acciones['crear'] || $acciones['editar'] || $acciones['eliminar']) {
+            $acciones['eliminar'] = 0;
+            if ($acciones['crear'] || $acciones['editar']) {
                 $acciones['ver'] = 1;
             }
             if (array_sum($acciones) > 0) {

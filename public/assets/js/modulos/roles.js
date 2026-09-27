@@ -31,7 +31,23 @@ $(function () {
         $('#matrizPermisos').toggleClass('d-none', activo);
     }
 
-    // Crear/editar/eliminar implican "ver"; quitar "ver" quita todo
+    /**
+     * Pone cada interruptor "Todos" según sus checkboxes:
+     * el de un módulo, encendido si tiene todas sus acciones;
+     * el de un grupo, encendido si todos sus submódulos lo están.
+     */
+    function sincronizarTodos() {
+        $(form).find('.permiso-todos').each(function () {
+            const $acciones = $(form).find(`.permiso[data-modulo="${$(this).data('modulo')}"]`);
+            this.checked = $acciones.length > 0 && $acciones.not(':checked').length === 0;
+        });
+        $(form).find('.grupo-todos').each(function () {
+            const $modulos = $(form).find(`.permiso-todos[data-grupo="${$(this).data('grupo')}"]`);
+            this.checked = $modulos.length > 0 && $modulos.not(':checked').length === 0;
+        });
+    }
+
+    // Crear/editar implican "ver"; quitar "ver" quita todo
     $(form).on('change', '.permiso', function () {
         const modulo = $(this).data('modulo');
         const $fila = $(form).find(`.permiso[data-modulo="${modulo}"]`);
@@ -41,10 +57,26 @@ $(function () {
         } else if (this.checked) {
             $fila.filter('[data-accion="ver"]').prop('checked', true);
         }
+        sincronizarTodos();
+    });
+
+    // "Todos" de un módulo: marca o desmarca ver, crear y editar de una vez
+    $(form).on('change', '.permiso-todos', function () {
+        $(form).find(`.permiso[data-modulo="${$(this).data('modulo')}"]`).prop('checked', this.checked);
+        sincronizarTodos();
+    });
+
+    // "Todos" de un grupo: lo mismo para cada submódulo del grupo
+    $(form).on('change', '.grupo-todos', function () {
+        $(form).find(`.permiso-todos[data-grupo="${$(this).data('grupo')}"]`).each((i, interruptor) => {
+            $(form).find(`.permiso[data-modulo="${$(interruptor).data('modulo')}"]`).prop('checked', this.checked);
+        });
+        sincronizarTodos();
     });
 
     $('#btnNuevo').on('click', function () {
         App.formulario.limpiar(form);
+        sincronizarTodos();
         modoSuperadmin(false);
         $('#modalRolTitulo').text('Nuevo rol');
         modal.show();
@@ -63,6 +95,7 @@ $(function () {
                         .prop('checked', Number(valor) === 1);
                 });
             });
+            sincronizarTodos();
 
             modoSuperadmin(Number(r.rol.es_superadmin) === 1);
             $('#modalRolTitulo').text('Editar rol');
