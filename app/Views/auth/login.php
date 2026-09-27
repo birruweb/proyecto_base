@@ -29,6 +29,10 @@ use App\Core\View;
                     <span class="input-group-text"><i class="bi bi-lock"></i></span>
                     <input type="password" class="form-control" id="password" name="password"
                            autocomplete="current-password" required>
+                    <button type="button" class="btn btn-outline-secondary" id="verPassword"
+                            aria-label="Mostrar contraseña" aria-pressed="false" title="Mostrar contraseña">
+                        <i class="bi bi-eye"></i>
+                    </button>
                 </div>
             </div>
 
@@ -36,3 +40,18 @@ use App\Core\View;
         </form>
     </div>
 </div>
+
+<script>
+    // Ojito: muestra u oculta la contraseña
+    document.getElementById('verPassword').addEventListener('click', function () {
+        const campo = document.getElementById('password');
+        const mostrar = campo.type === 'password';
+
+        campo.type = mostrar ? 'text' : 'password';
+        this.querySelector('i').className = mostrar ? 'bi bi-eye-slash' : 'bi bi-eye';
+        this.setAttribute('aria-pressed', String(mostrar));
+        this.title = mostrar ? 'Ocultar contraseña' : 'Mostrar contraseña';
+        this.setAttribute('aria-label', this.title);
+        campo.focus();
+    });
+</script>
