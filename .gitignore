@@ -1,0 +1,7 @@
+.env
+storage/logs/*
+!storage/logs/.gitkeep
+.idea/
+.vscode/
+Thumbs.db
+.DS_Store

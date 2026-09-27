@@ -1,0 +1,332 @@
+/* ==========================================================
+   Estilos del proyecto base. Cambia los colores aquí.
+   ========================================================== */
+:root {
+    --sidebar-ancho: 250px;
+    --sidebar-fondo: #1e293b;
+    --sidebar-texto: #cbd5e1;
+    --sidebar-activo: #0d6efd;
+    --fondo-app: #f1f4f9;
+}
+
+body {
+    background-color: var(--fondo-app);
+}
+
+.small-2 {
+    font-size: .75rem;
+}
+
+/* ---------- Estructura ---------- */
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+.app-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-content {
+    flex: 1;
+    padding: 1.5rem;
+}
+
+/* ---------- Menú lateral ---------- */
+.sidebar {
+    --bs-offcanvas-width: 260px;
+    width: var(--sidebar-ancho);
+    flex-shrink: 0;
+    color: var(--sidebar-texto);
+}
+
+/* offcanvas-lg pone el fondo transparente en pantallas grandes; lo sobrescribimos */
+.sidebar.offcanvas-lg {
+    background-color: var(--sidebar-fondo) !important;
+}
+
+@media (min-width: 992px) {
+    .sidebar {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+    }
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.05rem;
+    text-decoration: none;
+}
+
+.sidebar-brand:hover {
+    color: #fff;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: .75rem;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .6rem .85rem;
+    border-radius: .5rem;
+    color: var(--sidebar-texto);
+    text-decoration: none;
+    transition: background-color .15s, color .15s;
+}
+
+.sidebar-link:hover {
+    background-color: rgba(255, 255, 255, .07);
+    color: #fff;
+}
+
+.sidebar-link.active {
+    background-color: var(--sidebar-activo);
+    color: #fff;
+}
+
+/* Grupos desplegables */
+.sidebar-grupo {
+    width: 100%;
+    border: 0;
+    background: none;
+}
+
+.sidebar-flecha {
+    font-size: .75rem;
+    transition: transform .2s;
+}
+
+.sidebar-grupo.collapsed .sidebar-flecha {
+    transform: rotate(-90deg);
+}
+
+.sidebar-sub {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 2px 0 4px 1.1rem;
+    padding-left: .6rem;
+    border-left: 1px solid rgba(255, 255, 255, .12);
+}
+
+.sidebar-sub .sidebar-link {
+    padding-top: .45rem;
+    padding-bottom: .45rem;
+    font-size: .925rem;
+}
+
+/* ---------- Barra superior ---------- */
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: .65rem 1.5rem;
+    background-color: #fff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.topbar .btn-light {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.topbar .btn-light:hover,
+.topbar .btn-light.show {
+    background-color: #f1f4f9;
+}
+
+.min-w-0 {
+    min-width: 0;
+}
+
+/* ---------- Migas de pan ---------- */
+.breadcrumb-app {
+    flex-wrap: nowrap;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: .8rem;
+    --bs-breadcrumb-divider: '›';
+    --bs-breadcrumb-item-padding-x: .4rem;
+}
+
+.breadcrumb-app .breadcrumb-item {
+    color: #6b7280;
+}
+
+.breadcrumb-app .breadcrumb-item.active {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #374151;
+}
+
+.breadcrumb-app a {
+    color: #6b7280;
+    text-decoration: none;
+}
+
+.breadcrumb-app a:hover {
+    color: var(--bs-primary);
+}
+
+.avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: var(--sidebar-activo);
+    color: #fff;
+    font-weight: 600;
+    font-size: .9rem;
+}
+
+.avatar-lg {
+    width: 52px;
+    height: 52px;
+    font-size: 1.3rem;
+}
+
+/* ---------- Tarjetas ---------- */
+.card {
+    border: 0;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, .06), 0 1px 2px rgba(15, 23, 42, .04);
+}
+
+.card-header {
+    background-color: #fff;
+    padding-top: .9rem;
+    padding-bottom: .9rem;
+}
+
+.card-stat {
+    transition: transform .15s, box-shadow .15s;
+}
+
+.card-stat:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(15, 23, 42, .08);
+}
+
+.stat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: .75rem;
+    font-size: 1.4rem;
+}
+
+/* ---------- Tablas ---------- */
+table.dataTable thead th {
+    font-size: .8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    color: #64748b;
+}
+
+/* Scroll horizontal de la tabla en pantallas chicas */
+div.dt-container .dt-layout-table > div,
+div.dt-container .row:has(> div > table.dataTable) > div {
+    overflow-x: auto;
+}
+
+/* ---------- Login y errores ---------- */
+.auth-body {
+    background-color: var(--fondo-app);
+    min-height: 100vh;
+}
+
+.auth-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 1rem;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid #e5e7eb;
+    border-radius: .75rem;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, .06);
+}
+
+.auth-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-bottom: .75rem;
+    border-radius: .65rem;
+    background-color: #eef4ff;
+    color: #0d6efd;
+    font-size: 1.25rem;
+}
+
+.error-page {
+    width: 100%;
+    max-width: 760px;
+    padding: 2rem 1.5rem;
+}
+
+.error-code {
+    font-size: 4.5rem;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -.03em;
+    color: #cbd5e1;
+    margin-bottom: 1rem;
+}
+
+.error-trace {
+    max-height: 320px;
+    overflow: auto;
+    padding: 1rem;
+    border-radius: .5rem;
+    background-color: #0f172a;
+    color: #e2e8f0;
+    font-size: .75rem;
+    white-space: pre-wrap;
+}
+
+@media (max-width: 575.98px) {
+    .app-content {
+        padding: 1rem;
+    }
+
+    .topbar {
+        padding: .5rem 1rem;
+    }
+}

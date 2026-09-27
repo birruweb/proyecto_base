@@ -1,0 +1,16 @@
+# ==========================================================
+# Raíz del proyecto (XAMPP / Apache)
+# Todo se redirige internamente a public/, así el código,
+# el .env y la base de datos nunca quedan expuestos.
+# ==========================================================
+Options -Indexes
+
+# Bloquea archivos ocultos (.env, .git, etc.)
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
