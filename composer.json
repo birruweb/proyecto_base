@@ -1,0 +1,16 @@
+{
+    "name": "birruweb/proyecto-base",
+    "description": "Base MVC en PHP puro para sistemas administrativos",
+    "type": "project",
+    "require": {
+        "php": ">=8.1",
+        "phpoffice/phpspreadsheet": "^3.0"
+    },
+    "config": {
+        "platform": {
+            "php": "8.1.0"
+        },
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}

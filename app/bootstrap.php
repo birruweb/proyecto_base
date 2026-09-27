@@ -23,6 +23,13 @@ spl_autoload_register(static function (string $clase): void {
     }
 });
 
+// Librerías de Composer (PhpSpreadsheet...). vendor/ no se sube a Git: cada copia corre "composer install"
+if (!is_file(BASE_DIR . '/vendor/autoload.php')) {
+    http_response_code(500);
+    exit('Faltan las librerías de PHP. Desde la carpeta del proyecto corre: composer install');
+}
+require BASE_DIR . '/vendor/autoload.php';
+
 require APP_DIR . '/Core/helpers.php';
 
 // Variables de entorno

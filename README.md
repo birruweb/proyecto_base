@@ -1,8 +1,10 @@
 # Proyecto Base PHP
 
-Base MVC en PHP puro para sistemas administrativos: login, usuarios, roles con permisos por módulo y un CRUD de ejemplo. Sin Composer ni dependencias externas: las librerías del frontend vienen incluidas, así que funciona también sin internet (intranet).
+Base MVC en PHP puro para sistemas administrativos: login, usuarios, roles con permisos por módulo y un CRUD de ejemplo. Las librerías del frontend vienen incluidas en `public/assets/vendor/`; las de PHP (PhpSpreadsheet) se instalan con [Composer](https://getcomposer.org) con un solo comando.
 
-**Incluye:** PHP 8.1+ · MySQL/MariaDB · Bootstrap 5 · jQuery · DataTables 2 · SweetAlert2 · Bootstrap Icons
+**Incluye:** PHP 8.1+ · MySQL/MariaDB · Bootstrap 5 · jQuery · DataTables 2 · SweetAlert2 · Bootstrap Icons · PhpSpreadsheet (Excel)
+
+**Extensiones de PHP necesarias:** `zip` y `gd` (además de las que XAMPP trae activas). En XAMPP vienen desactivadas: en `C:\xampp\php\php.ini` quita el `;` de `;extension=zip` y `;extension=gd` y reinicia Apache.
 
 ---
 
@@ -10,8 +12,12 @@ Base MVC en PHP puro para sistemas administrativos: login, usuarios, roles con p
 
 1. **Copia la carpeta** `proyecto-base` a `C:\xampp\htdocs\`. Le puedes cambiar el nombre, la app lo detecta sola.
 2. En el **XAMPP Control Panel**, enciende **Apache** y **MySQL**.
-3. Revisa el archivo **`.env`**. Ya viene con los valores de XAMPP (usuario `root` sin contraseña). En `DB_NAME` va el nombre de la base del proyecto.
-4. **Instala la base de datos** desde la carpeta del proyecto:
+3. Revisa el archivo **`.env`**. Ya viene con los valores de XAMPP (usuario `root` sin contraseña). En `DB_NAME` va el nombre de la base del proyecto. Si clonaste de Git no existe: copia `.env.example` como `.env`.
+4. **Instala las librerías de PHP** desde la carpeta del proyecto (descarga las versiones exactas de `composer.lock` en `vendor/`):
+   ```
+   composer install
+   ```
+5. **Instala la base de datos** desde la carpeta del proyecto:
    ```
    C:\xampp\php\php consola\instalar.php
    ```
@@ -24,7 +30,7 @@ Base MVC en PHP puro para sistemas administrativos: login, usuarios, roles con p
    - DBeaver → crea la base → abre el archivo en un editor SQL **de esa base** → **Ejecutar script** (Alt+X).
    - Terminal: `C:\xampp\mysql\bin\mysql -u root NOMBRE_BASE < database\instalar.sql`
    </details>
-5. Abre **http://localhost/proyecto-base**
+6. Abre **http://localhost/proyecto-base**
 
 **Usuario inicial:** `admin` / `Admin123!` (rol Superadmin) → cámbiala en *Mi perfil*.
 
@@ -55,12 +61,14 @@ proyecto-base/
 │   ├── Views/            ← HTML de cada módulo + layouts
 │   ├── routes.php        ← TODAS las rutas y sus permisos
 │   └── bootstrap.php     ← arranque
-├── consola/              ← scripts de terminal (generador de módulos)
+├── consola/              ← scripts de terminal (instalar, generar módulos, quitar demo)
 ├── database/instalar.sql
 ├── public/               ← lo ÚNICO accesible desde el navegador
 │   ├── index.php         ← punto de entrada
-│   └── assets/           ← css, js, vendor (librerías)
-└── storage/logs/         ← bitácora de errores
+│   └── assets/           ← css, js, vendor (librerías del frontend)
+├── storage/logs/         ← bitácora de errores
+├── vendor/               ← librerías de PHP; la crea "composer install" (NO se sube a Git)
+└── composer.json/.lock   ← qué librerías de PHP usa el proyecto y en qué versión exacta
 ```
 
 ## Cómo viaja una petición
@@ -84,15 +92,16 @@ Navegador ── /productos/crear ──► .htaccess ──► public/index.php
 
 Ejemplo con un proyecto `cliente-a`:
 
-1. Copia la carpeta `proyecto-base` como `C:\xampp\htdocs\cliente-a`.
-2. En su `.env` cambia `APP_NAME`, `DB_NAME=cliente_a` y `SESSION_NAME=cliente_a_session`.
-3. Desde `cliente-a`: `C:\xampp\php\php consola\instalar.php`. **No tienes que crear la base:** el comando la crea con el nombre de `DB_NAME`. Solo MySQL tiene que estar encendido.
-4. Desde `cliente-a`: `C:\xampp\php\php consola\quitar-demo.php`
-5. Abre `http://localhost/cliente-a`, entra con `admin` / `Admin123!` y cambia la contraseña.
+1. Clónalo desde `C:\xampp\htdocs`: `git clone https://github.com/birruweb/proyecto_base.git cliente-a` (o copia la carpeta).
+2. En `cliente-a`, copia `.env.example` como `.env` y cambia `APP_NAME`, `DB_NAME=cliente_a` y `SESSION_NAME=cliente_a_session`.
+3. Desde `cliente-a`: `composer install`
+4. Desde `cliente-a`: `C:\xampp\php\php consola\instalar.php`. **No tienes que crear la base:** el comando la crea con el nombre de `DB_NAME`. Solo MySQL tiene que estar encendido.
+5. Desde `cliente-a`: `C:\xampp\php\php consola\quitar-demo.php`
+6. Abre `http://localhost/cliente-a`, entra con `admin` / `Admin123!` y cambia la contraseña.
 
-Cada copia tiene su propia base y su propia sesión: no se mezclan aunque estén en el mismo XAMPP.
+Cada copia tiene su propia base y su propia sesión: no se mezclan aunque estén en el mismo XAMPP. Un clon queda conectado al repositorio de la base: para un proyecto real, apúntalo a su propio repositorio (`git remote set-url origin <url-nueva>`) para no subir sus cambios a la base por accidente.
 
-**Sobre el paso 4:** Productos es un módulo de ejemplo. Sirve para ver que todo funciona y como plantilla, pero en un proyecto real sobra. `quitar-demo.php` borra sus archivos, sus rutas, su tarjeta en Inicio, su registro en el menú (con sus permisos), la tabla `productos` y su parte de `database/instalar.sql`, para que las instalaciones nuevas del proyecto ya no lo traigan. Antes de borrar pregunta; con `--si` no pregunta, y con `--solo-codigo` no toca la base de datos. **No lo corras en la base**, solo en las copias.
+**Sobre el paso 5:** Productos es un módulo de ejemplo. Sirve para ver que todo funciona y como plantilla, pero en un proyecto real sobra. `quitar-demo.php` borra sus archivos, sus rutas, su tarjeta en Inicio, su registro en el menú (con sus permisos), la tabla `productos` y su parte de `database/instalar.sql`, para que las instalaciones nuevas del proyecto ya no lo traigan. Antes de borrar pregunta; con `--si` no pregunta, y con `--solo-codigo` no toca la base de datos. **No lo corras en la base**, solo en las copias.
 
 ---
 
@@ -252,6 +261,30 @@ Si al revisar las rutas ves un **404**, casi siempre es un nombre que no coincid
 ### PHP (vistas)
 `e($texto)` escapa HTML (úsalo **siempre**), `url('ruta')`, `asset('css/app.css')`, `puede('modulo.accion')`, `csrf_field()`, `usuario_actual()`
 
+### Excel (PhpSpreadsheet)
+Con el ayudante `App\Core\Excel`:
+
+```php
+use App\Core\Excel;
+
+// Descargar un listado como .xlsx (nombre final: productos-2026-09-26.xlsx)
+public function exportar(): void
+{
+    Excel::descargar('productos', [
+        'nombre' => 'Nombre',      // clave de la fila => encabezado (define el orden)
+        'precio' => 'Precio',
+        'stock'  => 'Stock',
+    ], $this->productos->todos('nombre'));
+}
+
+// Leer un Excel subido (.xlsx, .xls o .csv): cada fila como ['Nombre' => ..., 'Precio' => ...]
+$filas = Excel::leer($_FILES['archivo']['tmp_name']);
+```
+
+La descarga es una ruta GET normal con su permiso (`$router->get('/productos/exportar', [...], 'productos.ver')`) y en la vista un enlace: `<a href="<?= url('productos/exportar') ?>">`. Los textos nunca se convierten en fórmulas (protege contra `=HYPERLINK(...)` escrito por un usuario) y los códigos como `00123` conservan sus ceros. Para varias hojas, estilos o fórmulas usa PhpSpreadsheet directamente: `Excel::crear()` te regresa el objeto `Spreadsheet` para seguir editándolo. Documentación: https://phpspreadsheet.readthedocs.io
+
+**Agregar otra librería de PHP:** `composer require autor/paquete` desde la carpeta del proyecto y sube a Git `composer.json` y `composer.lock` (`vendor/` no). En las demás copias, después de `git pull` corre `composer install`.
+
 ### JavaScript
 | Código | Qué hace |
 |---|---|
@@ -275,7 +308,7 @@ Si al revisar las rutas ves un **404**, casi siempre es un nombre que no coincid
 - **XSS:** `e()` en vistas y `App.render.texto` en tablas.
 - **Sesión:** cookie `HttpOnly` + `SameSite`, ID nuevo al iniciar sesión y cierre por inactividad (`SESSION_LIFETIME`). La cookie es solo de la carpeta de la app y cada sesión queda marcada con su app, así que varias copias en el mismo servidor no comparten el inicio de sesión.
 - **Permisos** revisados en el servidor en cada petición; ocultar un botón solo es estético.
-- **Código privado:** solo `public/` es accesible, y `.env`, `app/` y `database/` devuelven 403.
+- **Código privado:** solo `public/` es accesible desde el navegador; `.env`, `app/`, `database/`, `consola/` y `vendor/` no.
 - **Errores:** se registran en `storage/logs/` y el detalle solo se muestra con `APP_DEBUG=true`.
 - **Reglas de negocio:** no puedes desactivarte ni borrarte a ti mismo, y siempre queda al menos un administrador activo.
 
@@ -306,6 +339,8 @@ server {
     }
 }
 ```
+
+El servidor necesita las extensiones `zip` y `gd` de PHP (en Ubuntu: `sudo apt install php8.x-zip php8.x-gd` con tu versión de PHP) y, al subir el código, correr `composer install --no-dev --optimize-autoloader` en la carpeta del proyecto.
 
 En el `.env` del servidor pon `APP_ENV=production` y `APP_DEBUG=false`, y usa un usuario de BD propio (no root):
 
