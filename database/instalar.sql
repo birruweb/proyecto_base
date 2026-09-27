@@ -124,8 +124,8 @@ INSERT IGNORE INTO roles (id, nombre, descripcion, es_superadmin) VALUES
 
 -- Primero los grupos (los submódulos apuntan a ellos)
 INSERT IGNORE INTO modulos (id, padre_id, clave, nombre, icono, ruta, orden) VALUES
-    (5, NULL, 'administracion', 'Administración',   'bi-gear',         NULL,        90),
-    (6, NULL, 'catalogos',      'Catálogos',        'bi-folder2-open', NULL,        10),
+    (5, NULL, 'administracion', 'Administración',   'bi-gear',         NULL,        10),
+    (6, NULL, 'catalogos',      'Catálogos',        'bi-folder2-open', NULL,        20),
     (1, 5,    'usuarios',       'Usuarios',         'bi-people',       'usuarios',  10),
     (2, 5,    'roles',          'Roles y permisos', 'bi-shield-lock',  'roles',     20),
     (4, 5,    'modulos',        'Módulos',          'bi-diagram-3',    'modulos',   30),
