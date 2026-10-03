@@ -40,14 +40,14 @@
                 <input type="hidden" name="id">
 
                 <div class="mb-3">
-                    <label class="form-label" for="u_nombre">Nombre completo</label>
+                    <label class="form-label obligatorio" for="u_nombre">Nombre completo</label>
                     <input type="text" class="form-control" id="u_nombre" name="nombre" maxlength="100">
                     <div class="invalid-feedback"></div>
                 </div>
 
                 <div class="row g-3 mb-3">
                     <div class="col-sm-6">
-                        <label class="form-label" for="u_usuario">Usuario</label>
+                        <label class="form-label obligatorio" for="u_usuario">Usuario</label>
                         <input type="text" class="form-control" id="u_usuario" name="usuario" maxlength="50">
                         <div class="invalid-feedback"></div>
                     </div>
@@ -60,7 +60,7 @@
 
                 <div class="row g-3 mb-3">
                     <div class="col-sm-6">
-                        <label class="form-label" for="u_rol">Rol</label>
+                        <label class="form-label obligatorio" for="u_rol">Rol</label>
                         <select class="form-select" id="u_rol" name="rol_id">
                             <option value="">Selecciona...</option>
                             <?php foreach ($roles as $rol): ?>
@@ -70,7 +70,7 @@
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="col-sm-6">
-                        <label class="form-label" for="u_activo">Estado</label>
+                        <label class="form-label obligatorio" for="u_activo">Estado</label>
                         <select class="form-select" id="u_activo" name="activo">
                             <option value="1">Activo</option>
                             <option value="0">Inactivo</option>
@@ -80,13 +80,14 @@
                 </div>
 
                 <div>
-                    <label class="form-label" for="u_password">Contraseña</label>
+                    <label class="form-label obligatorio" for="u_password">Contraseña</label>
                     <input type="password" class="form-control" id="u_password" name="password" autocomplete="new-password">
                     <div class="invalid-feedback"></div>
                     <div class="form-text" id="ayudaPassword">Mínimo 8 caracteres.</div>
                 </div>
             </div>
             <div class="modal-footer">
+                <small class="text-body-secondary me-auto"><span class="text-danger">*</span> Obligatorio</small>
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
                 <button type="submit" class="btn btn-primary">Guardar</button>
             </div>

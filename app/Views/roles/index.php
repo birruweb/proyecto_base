@@ -41,7 +41,7 @@ $acciones = ['ver' => 'Ver', 'crear' => 'Crear', 'editar' => 'Editar'];
 
                 <div class="row g-3 mb-4">
                     <div class="col-md-5">
-                        <label class="form-label" for="r_nombre">Nombre</label>
+                        <label class="form-label obligatorio" for="r_nombre">Nombre</label>
                         <input type="text" class="form-control" id="r_nombre" name="nombre" maxlength="50">
                         <div class="invalid-feedback"></div>
                     </div>
@@ -132,6 +132,7 @@ $acciones = ['ver' => 'Ver', 'crear' => 'Crear', 'editar' => 'Editar'];
                 </div>
             </div>
             <div class="modal-footer">
+                <small class="text-body-secondary me-auto"><span class="text-danger">*</span> Obligatorio</small>
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
                 <button type="submit" class="btn btn-primary">Guardar</button>
             </div>

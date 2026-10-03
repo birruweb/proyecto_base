@@ -51,7 +51,7 @@
             <div class="modal-body">
                 <input type="hidden" name="id">
 
-                <label class="form-label d-block">Tipo</label>
+                <label class="form-label d-block obligatorio">Tipo</label>
                 <div class="btn-group w-100" role="group" aria-label="Tipo de módulo">
                     <input type="radio" class="btn-check" name="tipo" id="tipo_grupo" value="grupo">
                     <label class="btn btn-outline-primary" for="tipo_grupo"><i class="bi bi-folder me-1"></i>Grupo</label>
@@ -66,19 +66,19 @@
                 <div class="form-text mb-3" id="ayudaTipo"></div>
 
                 <div class="mb-3" id="campoPadre">
-                    <label class="form-label" for="m_padre">Grupo al que pertenece</label>
+                    <label class="form-label obligatorio" for="m_padre">Grupo al que pertenece</label>
                     <select class="form-select" id="m_padre" name="padre_id"></select>
                     <div class="invalid-feedback"></div>
                 </div>
 
                 <div class="row g-3">
                     <div class="col-sm-7">
-                        <label class="form-label" for="m_nombre">Nombre en el menú</label>
+                        <label class="form-label obligatorio" for="m_nombre">Nombre en el menú</label>
                         <input type="text" class="form-control" id="m_nombre" name="nombre" maxlength="100">
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="col-sm-5">
-                        <label class="form-label" for="m_clave">Clave</label>
+                        <label class="form-label obligatorio" for="m_clave">Clave</label>
                         <input type="text" class="form-control font-monospace" id="m_clave" name="clave" maxlength="50">
                         <div class="invalid-feedback"></div>
                     </div>
@@ -88,7 +88,7 @@
                 </div>
 
                 <div class="mb-3" id="campoRuta">
-                    <label class="form-label" for="m_ruta">Ruta</label>
+                    <label class="form-label obligatorio" for="m_ruta">Ruta</label>
                     <div class="input-group has-validation">
                         <span class="input-group-text text-body-secondary"><?= e(url()) ?></span>
                         <input type="text" class="form-control font-monospace" id="m_ruta" name="ruta" maxlength="100">
@@ -99,7 +99,7 @@
                 <div class="row g-3">
                     <div class="col-sm-6">
                         <label class="form-label" for="m_icono">
-                            Ícono <a href="https://icons.getbootstrap.com" target="_blank" rel="noopener" class="small">ver catálogo</a>
+                            <span class="obligatorio">Ícono</span> <a href="https://icons.getbootstrap.com" target="_blank" rel="noopener" class="small">ver catálogo</a>
                         </label>
                         <div class="input-group has-validation">
                             <span class="input-group-text"><i class="bi bi-circle" id="iconoPreview"></i></span>
@@ -108,12 +108,12 @@
                         </div>
                     </div>
                     <div class="col-6 col-sm-3">
-                        <label class="form-label" for="m_orden">Orden</label>
+                        <label class="form-label obligatorio" for="m_orden">Orden</label>
                         <input type="number" class="form-control" id="m_orden" name="orden" min="0" step="10" value="10">
                         <div class="invalid-feedback"></div>
                     </div>
                     <div class="col-6 col-sm-3">
-                        <label class="form-label" for="m_activo">Estado</label>
+                        <label class="form-label obligatorio" for="m_activo">Estado</label>
                         <select class="form-select" id="m_activo" name="activo">
                             <option value="1">Activo</option>
                             <option value="0">Inactivo</option>
@@ -123,6 +123,7 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <small class="text-body-secondary me-auto"><span class="text-danger">*</span> Obligatorio</small>
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
                 <button type="submit" class="btn btn-primary">Guardar</button>
             </div>

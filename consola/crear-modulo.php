@@ -602,6 +602,7 @@ $encabezados                <th class="text-end">Acciones</th>
                 <input type="hidden" name="id">
 $inputs            </div>
             <div class="modal-footer">
+                <small class="text-body-secondary me-auto"><span class="text-danger">*</span> Obligatorio</small>
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
                 <button type="submit" class="btn btn-primary">Guardar</button>
             </div>
@@ -654,7 +655,7 @@ function campoFormulario(array $c, string $prefijo): string
     };
 
     return "                <div class=\"mb-3\">\n"
-         . "                    <label class=\"form-label\" for=\"$id\">" . h($c['etiqueta']) . "$opcional</label>\n"
+         . "                    <label class=\"form-label" . ($c['requerido'] ? ' obligatorio' : '') . "\" for=\"$id\">" . h($c['etiqueta']) . "$opcional</label>\n"
          . "                    $control\n"
          . "                    <div class=\"invalid-feedback\"></div>\n"
          . "                </div>\n";

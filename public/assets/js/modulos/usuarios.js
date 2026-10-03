@@ -36,6 +36,7 @@ $(function () {
     function abrir(titulo, esNuevo) {
         $('#modalUsuarioTitulo').text(titulo);
         $('#ayudaPassword').text(esNuevo ? 'Mínimo 8 caracteres.' : 'Déjala vacía para no cambiarla.');
+        $('label[for="u_password"]').toggleClass('obligatorio', esNuevo);   // obligatoria solo al crear
         modal.show();
     }
 
